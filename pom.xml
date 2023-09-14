@@ -40,7 +40,7 @@
         <gson.version>2.9.0</gson.version>
     
         <maven-plugin-assembly.version>3.5.0</maven-plugin-assembly.version>
-        <maven-plugin-gpg.version>3.0.1</maven-plugin-gpg.version>
+        <maven-plugin-gpg.version>3.1.0</maven-plugin-gpg.version>
         <maven-plugin-nexus-staging.version>1.6.13</maven-plugin-nexus-staging.version>
         <maven-plugin-prettier.version>0.19</maven-plugin-prettier.version>
         <maven-plugin-prettier.prettierjava.version>2.0.0</maven-plugin-prettier.prettierjava.version>
