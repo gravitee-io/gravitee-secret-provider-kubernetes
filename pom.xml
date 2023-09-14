@@ -27,16 +27,17 @@
     </parent>
 
     <groupId>com.graviteesource.secretprovider</groupId>
-    <artifactId>gravitee-secret-provider-aws</artifactId>
+    <artifactId>gravitee-secret-provider-kubernetes</artifactId>
     <version>1.0.0-alpha.1</version>
-    <name>Gravitee.io - Plugin - Secret Provider - AWS</name>
-    <description>Plugin to fetch secrets from AWS Secret Manager</description>
+    <name>Gravitee.io - Plugin - Secret Provider - Kubernetes</name>
+    <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
         <gravitee-node.version>4.2.0-archi-222-secret-managers-SNAPSHOT</gravitee-node.version>
-        <gravitee-bom.version>6.0.3</gravitee-bom.version>
+        <gravitee-bom.version>6.0.6</gravitee-bom.version>
     
-        <aws.sdk-version>2.20.119</aws.sdk-version>
+        <kubernetes-client-java.version>18.0.1</kubernetes-client-java.version>
+        <gson.version>2.9.0</gson.version>
     
         <maven-plugin-assembly.version>3.5.0</maven-plugin-assembly.version>
         <maven-plugin-gpg.version>3.0.1</maven-plugin-gpg.version>
@@ -68,35 +69,29 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
-            <!-- AWS SDK -->
-            <dependency>
-                <groupId>software.amazon.awssdk</groupId>
-                <artifactId>bom</artifactId>
-                <version>${aws.sdk-version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>secretsmanager</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>software.amazon.awssdk</groupId>
-                    <artifactId>netty-client</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>software.amazon.awssdk</groupId>
-                    <artifactId>apache-client</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
+        
         <dependency>
             <groupId>io.gravitee.node</groupId>
             <artifactId>gravitee-node-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.kubernetes</groupId>
+            <artifactId>client-java</artifactId>
+            <version>${kubernetes-client-java.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -104,14 +99,6 @@
             <artifactId>vertx-core</artifactId>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>url-connection-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>apache-client</artifactId>
-        </dependency>    
         <!-- test -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
