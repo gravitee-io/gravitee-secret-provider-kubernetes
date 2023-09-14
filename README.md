@@ -1,1 +1,1 @@
-# gravitee-secret-provider-aws
+# gravitee-secret-provider-kubernetes
