@@ -1,0 +1,1 @@
+# gravitee-secret-provider-aws
