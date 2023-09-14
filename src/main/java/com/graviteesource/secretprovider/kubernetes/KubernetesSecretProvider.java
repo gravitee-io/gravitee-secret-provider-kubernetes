@@ -54,10 +54,7 @@ public class KubernetesSecretProvider implements SecretProvider {
   }
 
   @Override
-  public Flowable<SecretEvent> watch(
-    SecretMount secretMount,
-    SecretEvent.Type... events
-  ) {
+  public Flowable<SecretEvent> watch(SecretMount secretMount) {
     K8sSecretLocation k8sLocation = K8sSecretLocation.fromLocation(
       secretMount.location()
     );
