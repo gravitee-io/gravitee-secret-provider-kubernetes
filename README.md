@@ -6,14 +6,14 @@
 
 ## Overview
 
-Get secret from Kubernetes.
+Get secrets from Kubernetes.
 
 User may provide a specific kube config file, or rely on local or finally use cluster information when Gravitee is deployed in kubernetes.
 
 * supports of watch for TLS configuration
-* equivalent to kubernetes://secrets except the URL-like synthax varies.
+* equivalent to `kubernetes://secrets` except the URL-like syntax varies.
 
-## Docuementation:
+## Documentation:
 
 TODO provide link to documentation.gravitee.io
 
