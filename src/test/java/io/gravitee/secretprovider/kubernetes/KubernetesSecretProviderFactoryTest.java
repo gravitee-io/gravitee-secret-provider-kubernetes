@@ -1,12 +1,12 @@
-package com.graviteesource.secretprovider.kubernetes;
+package io.gravitee.secretprovider.kubernetes;
 
-import static com.graviteesource.secretprovider.kubernetes.test.TestUtils.newConfig;
+import static io.gravitee.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
-import com.graviteesource.secretprovider.kubernetes.config.K8sConfig;
 import io.gravitee.node.api.secrets.SecretProvider;
 import io.gravitee.node.api.secrets.model.SecretURL;
+import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;

@@ -1,14 +1,12 @@
-package com.graviteesource.secretprovider.kubernetes.config;
+package io.gravitee.secretprovider.kubernetes.config;
 
-import static com.graviteesource.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.gravitee.secretprovider.kubernetes.test.TestUtils;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Benoit BORDIGONI (benoit.bordigoni at graviteesource.com)
@@ -28,7 +26,9 @@ class K8sConfigTest {
 
     @Test
     void should_load_full_config() {
-        K8sConfig config = new K8sConfig(newConfig(Map.of("kubeConfigFile", "/opt/config.json", "namespace", "foo", "timeoutMs", 1555)));
+        K8sConfig config = new K8sConfig(
+            TestUtils.newConfig(Map.of("kubeConfigFile", "/opt/config.json", "namespace", "foo", "timeoutMs", 1555))
+        );
         assertThat(config.isEnabled()).isTrue();
         assertThat(config.getKubeConfigFile()).isEqualTo("/opt/config.json");
         assertThat(config.isClusterBased()).isFalse();
@@ -38,7 +38,7 @@ class K8sConfigTest {
 
     @Test
     void should_load_full_in_cluster() {
-        K8sConfig config = new K8sConfig(newConfig(Map.of()));
+        K8sConfig config = new K8sConfig(TestUtils.newConfig(Map.of()));
         assertThat(config.isEnabled()).isTrue();
         assertThat(config.getKubeConfigFile()).isBlank();
         assertThat(config.isClusterBased()).isTrue();

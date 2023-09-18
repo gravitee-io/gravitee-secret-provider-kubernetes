@@ -1,6 +1,6 @@
-package com.graviteesource.secretprovider.kubernetes.config;
+package io.gravitee.secretprovider.kubernetes.config;
 
-import static com.graviteesource.secretprovider.kubernetes.test.TestUtils.newConfig;
+import static io.gravitee.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.params.provider.Arguments.arguments;

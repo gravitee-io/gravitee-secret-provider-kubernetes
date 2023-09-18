@@ -1,4 +1,4 @@
-package com.graviteesource.secretprovider.kubernetes.config;
+package io.gravitee.secretprovider.kubernetes.config;
 
 import io.gravitee.node.api.secrets.SecretManagerConfiguration;
 import java.util.Map;

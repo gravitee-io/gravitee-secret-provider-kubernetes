@@ -1,12 +1,12 @@
-package com.graviteesource.secretprovider.kubernetes.client;
+package io.gravitee.secretprovider.kubernetes.client;
 
 import com.google.gson.reflect.TypeToken;
-import com.graviteesource.secretprovider.kubernetes.client.api.K8sClient;
-import com.graviteesource.secretprovider.kubernetes.config.K8sConfig;
-import com.graviteesource.secretprovider.kubernetes.config.K8sSecretLocation;
 import io.gravitee.node.api.secrets.errors.SecretManagerConfigurationException;
 import io.gravitee.node.api.secrets.errors.SecretManagerException;
 import io.gravitee.node.api.secrets.model.SecretEvent;
+import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
+import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
+import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
 import io.kubernetes.client.openapi.ApiCallback;
 import io.kubernetes.client.openapi.ApiClient;
 import io.kubernetes.client.openapi.ApiException;
