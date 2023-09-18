@@ -1,20 +1,18 @@
-package com.graviteesource.secretprovider.kubernetes;
+package io.gravitee.secretprovider.kubernetes;
 
-import static com.graviteesource.secretprovider.kubernetes.test.TestUtils.newConfig;
+import static io.gravitee.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import com.graviteesource.secretprovider.kubernetes.client.K8sSecretWatchResult;
-import com.graviteesource.secretprovider.kubernetes.client.api.K8sClient;
-import com.graviteesource.secretprovider.kubernetes.config.K8sConfig;
-import com.graviteesource.secretprovider.kubernetes.config.K8sSecretLocation;
 import io.gravitee.node.api.secrets.errors.SecretManagerConfigurationException;
 import io.gravitee.node.api.secrets.model.SecretEvent;
 import io.gravitee.node.api.secrets.model.SecretMap;
 import io.gravitee.node.api.secrets.model.SecretMount;
 import io.gravitee.node.api.secrets.model.SecretURL;
-import io.kubernetes.client.openapi.ApiException;
+import io.gravitee.secretprovider.kubernetes.client.K8sSecretWatchResult;
+import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
+import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
+import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
 import io.kubernetes.client.openapi.models.V1Secret;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
@@ -22,12 +20,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Stream;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Benoit BORDIGONI (benoit.bordigoni at graviteesource.com)

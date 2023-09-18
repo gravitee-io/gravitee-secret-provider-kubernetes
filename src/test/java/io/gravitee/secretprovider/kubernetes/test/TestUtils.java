@@ -1,4 +1,4 @@
-package com.graviteesource.secretprovider.kubernetes.test;
+package io.gravitee.secretprovider.kubernetes.test;
 
 import java.util.HashMap;
 import java.util.Map;

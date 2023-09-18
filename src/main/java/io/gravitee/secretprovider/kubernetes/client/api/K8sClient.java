@@ -1,8 +1,8 @@
-package com.graviteesource.secretprovider.kubernetes.client.api;
+package io.gravitee.secretprovider.kubernetes.client.api;
 
-import com.graviteesource.secretprovider.kubernetes.client.K8sSecretWatchResult;
-import com.graviteesource.secretprovider.kubernetes.config.K8sConfig;
-import com.graviteesource.secretprovider.kubernetes.config.K8sSecretLocation;
+import io.gravitee.secretprovider.kubernetes.client.K8sSecretWatchResult;
+import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
+import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
 import io.kubernetes.client.openapi.ApiException;
 import io.kubernetes.client.openapi.models.V1Secret;
 import io.reactivex.rxjava3.core.Flowable;
