@@ -26,7 +26,7 @@
         <version>22.0.2</version>
     </parent>
 
-    <groupId>com.graviteesource.secretprovider</groupId>
+    <groupId>io.gravitee.secretprovider</groupId>
     <artifactId>gravitee-secret-provider-kubernetes</artifactId>
     <version>1.0.0</version>
     <name>Gravitee.io - Plugin - Secret Provider - Kubernetes</name>
@@ -47,7 +47,7 @@
         <maven-plugin-properties.version>1.2.0</maven-plugin-properties.version>
     
         <!-- Property used by the publication job in CI-->
-        <publish-folder-path>graviteeio-ee/apim/plugins/secret-providers</publish-folder-path>
+        <publish-folder-path>plugins/secret-providers</publish-folder-path>
     
     </properties>
 
