@@ -37,6 +37,18 @@ class K8sConfigTest {
     }
 
     @Test
+    void should_load_full_config_with_strings_only() {
+        K8sConfig config = new K8sConfig(
+            Map.of("enabled", "true", "kubeConfigFile", "/opt/config.json", "namespace", "foo", "timeoutMs", "1555")
+        );
+        assertThat(config.isEnabled()).isTrue();
+        assertThat(config.getKubeConfigFile()).isEqualTo("/opt/config.json");
+        assertThat(config.isClusterBased()).isFalse();
+        assertThat(config.getNamespace()).isEqualTo("foo");
+        assertThat(config.getTimeoutMs()).isEqualTo(1555);
+    }
+
+    @Test
     void should_load_full_in_cluster() {
         K8sConfig config = new K8sConfig(TestUtils.newConfig(Map.of()));
         assertThat(config.isEnabled()).isTrue();
