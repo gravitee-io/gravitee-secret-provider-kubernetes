@@ -6,9 +6,7 @@ import io.gravitee.node.api.secrets.SecretManagerConfiguration;
 import java.util.Map;
 import java.util.Objects;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.experimental.FieldNameConstants;
 
 /**
