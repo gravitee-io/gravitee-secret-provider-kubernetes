@@ -31,7 +31,7 @@ public class K8sConfig implements SecretManagerConfiguration {
         }
         kubeConfigFile = getProperty(conf, Fields.kubeConfigFile, String.class, "");
         timeoutMs = getProperty(conf, Fields.timeoutMs, Integer.class, 3000);
-        namespace = getProperty(conf, Fields.namespace, String.class, "default");
+        namespace = getProperty(conf, Fields.namespace, String.class, "");
     }
 
     public boolean isClusterBased() {

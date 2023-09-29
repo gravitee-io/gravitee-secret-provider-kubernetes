@@ -4,22 +4,23 @@ import static io.gravitee.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 
+import io.gravitee.kubernetes.client.model.v1.Event;
+import io.gravitee.kubernetes.client.model.v1.Secret;
+import io.gravitee.kubernetes.client.model.v1.Watchable;
 import io.gravitee.node.api.secrets.errors.SecretManagerConfigurationException;
 import io.gravitee.node.api.secrets.model.SecretEvent;
 import io.gravitee.node.api.secrets.model.SecretMap;
 import io.gravitee.node.api.secrets.model.SecretMount;
 import io.gravitee.node.api.secrets.model.SecretURL;
-import io.gravitee.secretprovider.kubernetes.client.K8sSecretWatchResult;
 import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
 import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
 import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
-import io.kubernetes.client.openapi.models.V1Secret;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.*;
 
@@ -89,32 +90,32 @@ class KubernetesSecretProviderTest {
     @Nested
     class WithMockClient {
 
-        private V1Secret secret;
-        private Flowable<K8sSecretWatchResult> flowable;
+        private Secret secret;
+        private Flowable<Event<Secret>> flowable;
 
         class MockClient implements K8sClient {
+
+            @Override
+            public Maybe<io.gravitee.kubernetes.client.model.v1.Secret> getSecret(K8sSecretLocation location) {
+                return secret == null ? Maybe.error(new RuntimeException("secret not found")) : Maybe.just(secret);
+            }
+
+            @Override
+            public Flowable<Event<Secret>> watchSecret(K8sSecretLocation location) {
+                return flowable;
+            }
 
             @SneakyThrows
             @Override
             public K8sConfig config() {
                 return new K8sConfig(newConfig(Map.of()));
             }
-
-            @Override
-            public Optional<V1Secret> getSecret(K8sSecretLocation location) {
-                return Optional.of(secret);
-            }
-
-            @Override
-            public Flowable<K8sSecretWatchResult> watchSecret(String namespace, String secret) {
-                return flowable;
-            }
         }
 
         @Test
         void should_resolve_with_mock_client_and_key_map() {
-            this.secret = new V1Secret();
-            secret.data(Map.of("pwd", "changeme".getBytes(StandardCharsets.UTF_8), "usr", "admin".getBytes()));
+            this.secret = new Secret();
+            secret.setData(Map.of("pwd", base64("changeme"), "usr", base64("admin")));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
             Maybe<SecretMap> result = cut.resolve(
                 cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo?keymap=username:usr&keymap=password:pwd"))
@@ -129,9 +130,9 @@ class KubernetesSecretProviderTest {
 
         @Test
         void should_watch_with_mock_client_and_key_map() {
-            V1Secret v1Secret = new V1Secret();
-            v1Secret.data(Map.of("key", "changeme".getBytes(), "pub", "admin".getBytes()));
-            this.flowable = Flowable.fromIterable(List.of(new K8sSecretWatchResult(SecretEvent.Type.CREATED, v1Secret)));
+            this.secret = new Secret();
+            secret.setData(Map.of("key", base64("changeme"), "pub", base64("admin")));
+            this.flowable = Flowable.fromIterable(List.of(new Event<>("CREATED", secret)));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
 
             Flowable<SecretEvent> result = cut.watch(
@@ -150,8 +151,8 @@ class KubernetesSecretProviderTest {
 
         @Test
         void should_resolve_basic_with_mock_client_and_no_keymap() {
-            this.secret = new V1Secret();
-            secret.data(Map.of("password", "changeme".getBytes(StandardCharsets.UTF_8), "username", "admin".getBytes()));
+            this.secret = new Secret();
+            secret.setData(Map.of("password", base64("changeme"), "username", base64("admin")));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
 
             Maybe<SecretMap> result = cut.resolve(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
@@ -166,10 +167,9 @@ class KubernetesSecretProviderTest {
 
         @Test
         void should_watch_tls_with_mock_client_and_no_keymap() {
-            V1Secret v1Secret = new V1Secret();
-            v1Secret.data(Map.of("tls.key", "changeme".getBytes(StandardCharsets.UTF_8), "tls.crt", "admin".getBytes()));
-
-            this.flowable = Flowable.fromIterable(List.of(new K8sSecretWatchResult(SecretEvent.Type.CREATED, v1Secret)));
+            this.secret = new Secret();
+            this.secret.setData(Map.of("tls.key", base64("changeme"), "tls.crt", base64("admin")));
+            this.flowable = Flowable.fromIterable(List.of(new Event<>("CREATED", secret)));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
             Flowable<SecretEvent> result = cut.watch(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
             List<SecretEvent> events = result.toList().blockingGet();
@@ -181,5 +181,20 @@ class KubernetesSecretProviderTest {
             assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent();
             assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY).get().asString()).isEqualTo("changeme");
         }
+
+        @Test
+        void should_not_be_able_to_watch_when_no_secret() {
+            this.secret = null;
+            this.flowable = Flowable.empty();
+            KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
+            Maybe<SecretMap> resolve = cut.resolve(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
+            Flowable<SecretEvent> watch = cut.watch(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
+            assertThatCode(resolve::blockingGet).isInstanceOf(RuntimeException.class).hasMessageContaining("secret not found");
+            assertThatCode(watch::blockingFirst).isInstanceOf(RuntimeException.class).hasMessageContaining("secret not found");
+        }
+    }
+
+    private String base64(String string) {
+        return Base64.getEncoder().encodeToString(string.getBytes(StandardCharsets.UTF_8));
     }
 }

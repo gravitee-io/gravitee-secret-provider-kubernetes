@@ -54,6 +54,6 @@ class K8sConfigTest {
         assertThat(config.isEnabled()).isTrue();
         assertThat(config.getKubeConfigFile()).isBlank();
         assertThat(config.isClusterBased()).isTrue();
-        assertThat(config.getNamespace()).isEqualTo("default");
+        assertThat(config.getNamespace()).isEmpty();
     }
 }
