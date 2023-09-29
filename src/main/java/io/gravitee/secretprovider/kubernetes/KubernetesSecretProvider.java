@@ -6,13 +6,11 @@ import io.gravitee.node.api.secrets.errors.SecretManagerException;
 import io.gravitee.node.api.secrets.model.*;
 import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
 import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
-import io.kubernetes.client.openapi.models.V1Secret;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import java.util.Map;
 import java.util.Optional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.MapUtils;
 
 /**
  * @author Benoit BORDIGONI (benoit.bordigoni at graviteesource.com)
@@ -41,33 +39,34 @@ public class KubernetesSecretProvider implements SecretProvider {
 
     @Override
     public Maybe<SecretMap> resolve(SecretMount secretMount) {
-        try {
-            K8sSecretLocation k8sLocation = K8sSecretLocation.fromLocation(secretMount.location());
-            Optional<V1Secret> k8sSecret = client.getSecret(k8sLocation);
-            return Maybe
-                .fromOptional(k8sSecret.map(V1Secret::getData).map(SecretMap::of))
-                .doOnSuccess(map -> handleWellKnowSecretKey(map, secretMount));
-        } catch (Exception e) {
-            return Maybe.error(new SecretManagerException(e));
-        }
+        K8sSecretLocation k8sLocation = K8sSecretLocation.fromLocation(secretMount.location());
+        return client
+            .getSecret(k8sLocation)
+            .map(k8sSecret -> {
+                SecretMap sm = SecretMap.ofBase64(k8sSecret.getData());
+                handleWellKnownSecretKeys(sm, secretMount);
+                return sm;
+            });
     }
 
     @Override
     public Flowable<SecretEvent> watch(SecretMount secretMount) {
         K8sSecretLocation k8sLocation = K8sSecretLocation.fromLocation(secretMount.location());
         return client
-            .watchSecret(k8sLocation.namespace(), k8sLocation.secret())
-            .flatMapMaybe(resp -> {
-                if (resp.type() != SecretEvent.Type.DELETED) {
-                    return Maybe
-                        .fromOptional(
-                            Optional.ofNullable(resp.v1Secret().getData()).map(data -> new SecretEvent(resp.type(), SecretMap.of(data)))
-                        )
-                        .doOnSuccess(event -> handleWellKnowSecretKey(event.secretMap(), secretMount));
-                } else {
-                    return Maybe.just(new SecretEvent(resp.type(), new SecretMap(null)));
+            .watchSecret(k8sLocation)
+            .map(event -> {
+                if (event.getType().equals("ERROR")) {
+                    throw new SecretManagerException("Kubernetes watch on %s return a error: %s".formatted(k8sLocation, event));
                 }
-            });
+                if (event.getType().equals("DELETED")) {
+                    return new SecretEvent(SecretEvent.Type.DELETED, new SecretMap(null));
+                }
+                SecretMap secretMap = SecretMap.ofBase64(event.getObject().getData());
+                handleWellKnownSecretKeys(secretMap, secretMount);
+                return new SecretEvent(SecretEvent.Type.UPDATED, secretMap);
+            })
+            .skip(1)
+            .startWith(resolve(secretMount).map(secretMap -> new SecretEvent(SecretEvent.Type.CREATED, secretMap)));
     }
 
     @Override
@@ -87,12 +86,12 @@ public class KubernetesSecretProvider implements SecretProvider {
         return new SecretMount(url.provider(), new SecretLocation(k8sSecretLocation.asMap()), k8sSecretLocation.key(), url);
     }
 
-    private void handleWellKnowSecretKey(SecretMap secretMap, SecretMount secretMount) {
+    private void handleWellKnownSecretKeys(SecretMap secretMap, SecretMount secretMount) {
         secretMap.handleWellKnownSecretKeys(
             Optional
                 .ofNullable(secretMount.secretURL())
                 .map(SecretURL::wellKnowKeyMap)
-                .filter(MapUtils::isNotEmpty)
+                .filter(map -> !map.isEmpty())
                 .orElse(DEFAULT_WELL_KNOW_KEY_MAP)
         );
     }
