@@ -1,3 +1,11 @@
+# [1.0.0-alpha.2](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0-alpha.1...1.0.0-alpha.2) (2023-10-02)
+
+
+### Bug Fixes
+
+* use 4.0.0-alpha.1 version gravitee-node ([53bacb7](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/53bacb7b9a333ce5de1f5ec3d5b65b7f17b95104))
+* use released version of node ([d6095ed](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/d6095ed41031037d2e4cb53837473d6fe240cace))
+
 # 1.0.0-alpha.1 (2023-10-02)
 
 
