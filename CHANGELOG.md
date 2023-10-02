@@ -1,3 +1,10 @@
+# [1.0.0-alpha.3](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0-alpha.2...1.0.0-alpha.3) (2023-10-02)
+
+
+### Bug Fixes
+
+* add forgotten license and vertx as provided deps ([c378168](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/c378168ba948dfa3944ba6ce4f041f8a22385492))
+
 # [1.0.0-alpha.2](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0-alpha.1...1.0.0-alpha.2) (2023-10-02)
 
 
