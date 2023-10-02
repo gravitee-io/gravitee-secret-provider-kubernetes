@@ -28,7 +28,7 @@
 
     <groupId>com.graviteesource.secretprovider</groupId>
     <artifactId>gravitee-secret-provider-kubernetes</artifactId>
-    <version>1.0.0-alpha.1</version>
+    <version>1.0.0</version>
     <name>Gravitee.io - Plugin - Secret Provider - Kubernetes</name>
     <description>Plugin to fetch secrets from Kubernetes</description>
 
