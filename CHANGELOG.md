@@ -1,3 +1,18 @@
+# 1.0.0-alpha.1 (2023-10-02)
+
+
+### Bug Fixes
+
+* allow config to contain only strings ([6ddc975](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/6ddc975bb3149ed23c1a22e271d167cc3d3f13e4))
+* apply changes required by latest node-api changes ([4e1817c](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/4e1817cc5b381b28af86ea3f023b1578717bad83))
+* remove unused imports ([b56f3db](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/b56f3db420c7d7e823fa23333468123da9afacda))
+* unify org and gio bom versions ([bdde07f](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/bdde07fdf0e095c07b743db924b674f37d613308))
+
+
+### Features
+
+* secret provider plugin for Kubernetes ([01403fe](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/01403fe0610a6adbd4956796511fbfaecdd2411f))
+
 ## [1.0.1-alpha.1](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0...1.0.1-alpha.1) (2023-10-02)
 
 
