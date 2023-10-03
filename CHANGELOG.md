@@ -1,3 +1,10 @@
+# [1.0.0-alpha.4](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0-alpha.3...1.0.0-alpha.4) (2023-10-03)
+
+
+### Bug Fixes
+
+* update kubernetes client to version 3.0.0 ([3c50cdf](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/3c50cdf086835f116c027975ea10513e5b7179da))
+
 # [1.0.0-alpha.3](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0-alpha.2...1.0.0-alpha.3) (2023-10-02)
 
 
