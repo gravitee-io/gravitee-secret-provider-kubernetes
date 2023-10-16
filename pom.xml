@@ -34,7 +34,7 @@
 
     <properties>
         <gravitee-node.version>4.2.0-archi-222-secret-managers-SNAPSHOT</gravitee-node.version>
-        <gravitee-bom.version>6.0.15</gravitee-bom.version>
+        <gravitee-bom.version>6.0.16</gravitee-bom.version>
     
         <kubernetes-client-java.version>18.0.1</kubernetes-client-java.version>
         <gson.version>2.9.0</gson.version>
