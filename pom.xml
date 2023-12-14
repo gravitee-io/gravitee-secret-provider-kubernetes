@@ -33,7 +33,7 @@
     <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
-        <gravitee-node.version>4.2.0-archi-222-secret-managers-SNAPSHOT</gravitee-node.version>
+        <gravitee-node.version>5.0.0</gravitee-node.version>
         <gravitee-bom.version>6.0.22</gravitee-bom.version>
     
         <kubernetes-client-java.version>18.0.1</kubernetes-client-java.version>
