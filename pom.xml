@@ -26,28 +26,25 @@
         <version>22.0.15</version>
     </parent>
 
-    <groupId>com.graviteesource.secretprovider</groupId>
+    <groupId>io.gravitee.secretprovider</groupId>
     <artifactId>gravitee-secret-provider-kubernetes</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.0-alpha.4</version>
     <name>Gravitee.io - Plugin - Secret Provider - Kubernetes</name>
     <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
-        <gravitee-node.version>4.2.0-archi-222-secret-managers-SNAPSHOT</gravitee-node.version>
+        <gravitee-node.version>4.4.0-alpha.1</gravitee-node.version>
         <gravitee-bom.version>6.0.22</gravitee-bom.version>
-    
-        <kubernetes-client-java.version>18.0.1</kubernetes-client-java.version>
-        <gson.version>2.9.0</gson.version>
-    
-        <maven-plugin-assembly.version>3.5.0</maven-plugin-assembly.version>
-        <maven-plugin-gpg.version>3.0.1</maven-plugin-gpg.version>
+        <gravitee-kubernetes.version>3.0.0</gravitee-kubernetes.version>
+        <maven-plugin-assembly.version>3.6.0</maven-plugin-assembly.version>
+        <maven-plugin-gpg.version>3.1.0</maven-plugin-gpg.version>
         <maven-plugin-nexus-staging.version>1.6.13</maven-plugin-nexus-staging.version>
         <maven-plugin-prettier.version>0.21</maven-plugin-prettier.version>
         <maven-plugin-prettier.prettierjava.version>2.0.0</maven-plugin-prettier.prettierjava.version>
         <maven-plugin-properties.version>1.2.1</maven-plugin-properties.version>
     
         <!-- Property used by the publication job in CI-->
-        <publish-folder-path>graviteeio-ee/apim/plugins/secret-providers</publish-folder-path>
+        <publish-folder-path>plugins/secret-providers</publish-folder-path>
     
     </properties>
 
@@ -69,6 +66,11 @@
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
+            <dependency>
+                <groupId>io.gravitee.kubernetes</groupId>
+                <artifactId>gravitee-kubernetes-client</artifactId>
+                <version>${gravitee-kubernetes.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -80,23 +82,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.kubernetes</groupId>
-            <artifactId>client-java</artifactId>
-            <version>${kubernetes-client-java.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>${gson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
+            <groupId>io.gravitee.kubernetes</groupId>
+            <artifactId>gravitee-kubernetes-client</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
-            <artifactId>vertx-core</artifactId>
+            <artifactId>vertx-rx-java3</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <!-- test -->
@@ -186,22 +183,6 @@
                         <phase>package</phase>
                         <goals>
                             <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.hubspot.maven.plugins</groupId>
-                <artifactId>prettier-maven-plugin</artifactId>
-                <version>${maven-plugin-prettier.version}</version>
-                <configuration>
-                    <prettierJavaVersion>${maven-plugin-prettier.prettierjava.version}</prettierJavaVersion>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>check</goal>
                         </goals>
                     </execution>
                 </executions>
