@@ -34,7 +34,7 @@
 
     <properties>
         <gravitee-node.version>5.8.1</gravitee-node.version>
-        <gravitee-bom.version>6.0.32</gravitee-bom.version>
+        <gravitee-bom.version>6.0.33</gravitee-bom.version>
         <gravitee-kubernetes.version>3.1.0</gravitee-kubernetes.version>
         <maven-plugin-assembly.version>3.6.0</maven-plugin-assembly.version>
         <maven-plugin-prettier.version>0.21</maven-plugin-prettier.version>
