@@ -33,7 +33,7 @@
     <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
-        <gravitee-node.version>5.11.0</gravitee-node.version>
+        <gravitee-node.version>5.20.0</gravitee-node.version>
         <gravitee-bom.version>6.0.35</gravitee-bom.version>
         <gravitee-kubernetes.version>3.1.0</gravitee-kubernetes.version>
         <maven-plugin-assembly.version>3.7.1</maven-plugin-assembly.version>
