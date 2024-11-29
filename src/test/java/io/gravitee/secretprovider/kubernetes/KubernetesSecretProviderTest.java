@@ -6,8 +6,6 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import io.gravitee.kubernetes.client.model.v1.Event;
 import io.gravitee.kubernetes.client.model.v1.Secret;
-import io.gravitee.kubernetes.client.model.v1.Watchable;
-import io.gravitee.node.api.secrets.errors.SecretManagerConfigurationException;
 import io.gravitee.node.api.secrets.model.SecretEvent;
 import io.gravitee.node.api.secrets.model.SecretMap;
 import io.gravitee.node.api.secrets.model.SecretMount;
@@ -79,12 +77,6 @@ class KubernetesSecretProviderTest {
             assertThat(secretMount.key()).isNull();
             assertThat(secretMount.isKeyEmpty()).isTrue();
         }
-
-        @Test
-        void should_fail_returning_secret_mount() {
-            SecretURL url = SecretURL.from("secret://foo/secret/bar");
-            assertThatCode(() -> cut.fromURL(url)).isInstanceOf(SecretManagerConfigurationException.class);
-        }
     }
 
     @Nested
@@ -122,10 +114,8 @@ class KubernetesSecretProviderTest {
             );
             SecretMap secretMap = result.blockingGet();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME).get().asString()).isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD).get().asString()).isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME)).isPresent().get().asString().isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD)).isPresent().get().asString().isEqualTo("changeme");
         }
 
         @Test
@@ -143,10 +133,8 @@ class KubernetesSecretProviderTest {
             assertThat(events).hasSize(1);
             SecretMap secretMap = events.get(0).secretMap();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE).get().asString()).isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY).get().asString()).isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE)).isPresent().get().asString().isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent().get().asString().isEqualTo("changeme");
         }
 
         @Test
@@ -159,10 +147,8 @@ class KubernetesSecretProviderTest {
 
             SecretMap secretMap = result.blockingGet();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME).get().asString()).isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD).get().asString()).isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME)).isPresent().get().asString().isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD)).isPresent().get().asString().isEqualTo("changeme");
         }
 
         @Test
@@ -176,10 +162,8 @@ class KubernetesSecretProviderTest {
             assertThat(events).hasSize(1);
             SecretMap secretMap = events.get(0).secretMap();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE).get().asString()).isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY).get().asString()).isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE)).isPresent().get().asString().isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent().get().asString().isEqualTo("changeme");
         }
 
         @Test

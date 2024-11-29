@@ -33,9 +33,12 @@
     <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
-        <gravitee-node.version>5.11.0</gravitee-node.version>
-        <gravitee-bom.version>6.0.35</gravitee-bom.version>
-        <gravitee-kubernetes.version>3.1.0</gravitee-kubernetes.version>
+        <gravitee-node.version>7.0.0-alpha.5</gravitee-node.version>
+        <gravitee-bom.version>8.1.19</gravitee-bom.version>
+        <gravitee-secret-api.version>1.0.0-alpha.1</gravitee-secret-api.version>
+
+        <gravitee-kubernetes.version>3.4.1</gravitee-kubernetes.version>
+
         <maven-plugin-assembly.version>3.7.1</maven-plugin-assembly.version>
         <maven-plugin-prettier.version>0.21</maven-plugin-prettier.version>
         <maven-plugin-prettier.prettierjava.version>2.0.0</maven-plugin-prettier.prettierjava.version>
@@ -69,6 +72,11 @@
                 <artifactId>gravitee-kubernetes-client</artifactId>
                 <version>${gravitee-kubernetes.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.gravitee.secret</groupId>
+                <artifactId>gravitee-secret-api</artifactId>
+                <version>${gravitee-secret-api.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -80,6 +88,11 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>io.gravitee.secret</groupId>
+            <artifactId>gravitee-secret-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>io.gravitee.kubernetes</groupId>
             <artifactId>gravitee-kubernetes-client</artifactId>
             <scope>provided</scope>
@@ -87,6 +100,11 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-rx-java3</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -1,7 +1,6 @@
 package io.gravitee.secretprovider.kubernetes;
 
 import io.gravitee.node.api.secrets.SecretProvider;
-import io.gravitee.node.api.secrets.errors.SecretManagerConfigurationException;
 import io.gravitee.node.api.secrets.errors.SecretManagerException;
 import io.gravitee.node.api.secrets.model.*;
 import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
@@ -71,18 +70,7 @@ public class KubernetesSecretProvider implements SecretProvider {
 
     @Override
     public SecretMount fromURL(SecretURL url) {
-        if (!url.provider().equals(KubernetesSecretProvider.PLUGIN_ID)) {
-            throw new SecretManagerConfigurationException(
-                "URL is not valid for Kubernetes Secret Provider plugin. Should be %s%s//<secret>[:<data field>] but was: '%s'".formatted(
-                        PLUGIN_URL_SCHEME,
-                        PLUGIN_ID,
-                        url
-                    )
-            );
-        }
-
         K8sSecretLocation k8sSecretLocation = K8sSecretLocation.fromURL(url, client.config());
-
         return new SecretMount(url.provider(), new SecretLocation(k8sSecretLocation.asMap()), k8sSecretLocation.key(), url);
     }
 
