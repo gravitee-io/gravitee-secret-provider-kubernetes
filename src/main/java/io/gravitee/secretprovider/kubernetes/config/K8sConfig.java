@@ -1,8 +1,8 @@
 package io.gravitee.secretprovider.kubernetes.config;
 
-import static io.gravitee.node.api.secrets.util.ConfigHelper.getProperty;
+import static io.gravitee.secrets.api.util.ConfigHelper.getProperty;
 
-import io.gravitee.node.api.secrets.SecretManagerConfiguration;
+import io.gravitee.secrets.api.plugin.SecretManagerConfiguration;
 import java.util.Map;
 import java.util.Objects;
 import lombok.AccessLevel;

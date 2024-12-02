@@ -6,13 +6,13 @@ import static org.assertj.core.api.Assertions.assertThatCode;
 
 import io.gravitee.kubernetes.client.model.v1.Event;
 import io.gravitee.kubernetes.client.model.v1.Secret;
-import io.gravitee.node.api.secrets.model.SecretEvent;
-import io.gravitee.node.api.secrets.model.SecretMap;
-import io.gravitee.node.api.secrets.model.SecretMount;
-import io.gravitee.node.api.secrets.model.SecretURL;
 import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
 import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
 import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
+import io.gravitee.secrets.api.core.SecretEvent;
+import io.gravitee.secrets.api.core.SecretMap;
+import io.gravitee.secrets.api.core.SecretMount;
+import io.gravitee.secrets.api.core.SecretURL;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import java.nio.charset.StandardCharsets;
@@ -114,8 +114,16 @@ class KubernetesSecretProviderTest {
             );
             SecretMap secretMap = result.blockingGet();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME)).isPresent().get().asString().isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD)).isPresent().get().asString().isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("changeme");
         }
 
         @Test
@@ -133,8 +141,16 @@ class KubernetesSecretProviderTest {
             assertThat(events).hasSize(1);
             SecretMap secretMap = events.get(0).secretMap();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE)).isPresent().get().asString().isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent().get().asString().isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("changeme");
         }
 
         @Test
@@ -147,8 +163,16 @@ class KubernetesSecretProviderTest {
 
             SecretMap secretMap = result.blockingGet();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME)).isPresent().get().asString().isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD)).isPresent().get().asString().isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PASSWORD))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("changeme");
         }
 
         @Test
@@ -162,8 +186,16 @@ class KubernetesSecretProviderTest {
             assertThat(events).hasSize(1);
             SecretMap secretMap = events.get(0).secretMap();
             assertThat(secretMap).isNotNull();
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE)).isPresent().get().asString().isEqualTo("admin");
-            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY)).isPresent().get().asString().isEqualTo("changeme");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.CERTIFICATE))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("admin");
+            assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.PRIVATE_KEY))
+                .isPresent()
+                .get()
+                .extracting(io.gravitee.secrets.api.core.Secret::asString)
+                .isEqualTo("changeme");
         }
 
         @Test

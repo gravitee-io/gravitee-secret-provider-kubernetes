@@ -5,8 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
-import io.gravitee.node.api.secrets.model.SecretLocation;
-import io.gravitee.node.api.secrets.model.SecretURL;
+import io.gravitee.secrets.api.core.SecretLocation;
+import io.gravitee.secrets.api.core.SecretURL;
 import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.DisplayNameGeneration;
@@ -55,7 +55,7 @@ class K8sSecretLocationTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("goodLocation")
-    void should_build_from_location(String _name, Map<String, Object> location, boolean hasKey) {
+    void should_build_from_location(String name, Map<String, Object> location, boolean hasKey) {
         K8sSecretLocation k8sSecretLocation = K8sSecretLocation.fromLocation(new SecretLocation(location));
         assertThat(k8sSecretLocation.namespace()).isNotBlank();
         assertThat(k8sSecretLocation.secret()).isNotBlank();
@@ -74,7 +74,7 @@ class K8sSecretLocationTest {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource("badLocation")
-    void should_fail_building_from_location(String _name, Map<String, Object> location) {
+    void should_fail_building_from_location(String name, Map<String, Object> location) {
         SecretLocation secretLocation = new SecretLocation(location);
         assertThatCode(() -> K8sSecretLocation.fromLocation(secretLocation)).isInstanceOf(NullPointerException.class);
     }

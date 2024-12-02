@@ -1,10 +1,10 @@
 package io.gravitee.secretprovider.kubernetes;
 
-import io.gravitee.node.api.secrets.SecretProvider;
-import io.gravitee.node.api.secrets.errors.SecretManagerException;
-import io.gravitee.node.api.secrets.model.*;
 import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
 import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
+import io.gravitee.secrets.api.core.*;
+import io.gravitee.secrets.api.errors.SecretManagerException;
+import io.gravitee.secrets.api.plugin.SecretProvider;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
 import java.util.Map;
