@@ -34,7 +34,7 @@
 
     <properties>
         <gravitee-bom.version>8.1.19</gravitee-bom.version>
-        <gravitee-secret-api.version>1.0.0-APIM-7497-api-secrets-SNAPSHOT</gravitee-secret-api.version>
+        <gravitee-secret-api.version>1.0.0-alpha.1</gravitee-secret-api.version>
 
         <gravitee-kubernetes.version>3.4.1</gravitee-kubernetes.version>
 
