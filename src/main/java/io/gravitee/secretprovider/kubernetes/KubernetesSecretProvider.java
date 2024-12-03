@@ -63,9 +63,7 @@ public class KubernetesSecretProvider implements SecretProvider {
                 SecretMap secretMap = SecretMap.ofBase64(event.getObject().getData());
                 handleWellKnownSecretKeys(secretMap, secretMount);
                 return new SecretEvent(SecretEvent.Type.UPDATED, secretMap);
-            })
-            .skip(1)
-            .startWith(resolve(secretMount).map(secretMap -> new SecretEvent(SecretEvent.Type.CREATED, secretMap)));
+            });
     }
 
     @Override

@@ -2,7 +2,6 @@ package io.gravitee.secretprovider.kubernetes;
 
 import static io.gravitee.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 
 import io.gravitee.kubernetes.client.model.v1.Event;
 import io.gravitee.kubernetes.client.model.v1.Secret;
@@ -89,7 +88,7 @@ class KubernetesSecretProviderTest {
 
             @Override
             public Maybe<io.gravitee.kubernetes.client.model.v1.Secret> getSecret(K8sSecretLocation location) {
-                return secret == null ? Maybe.error(new RuntimeException("secret not found")) : Maybe.just(secret);
+                return secret == null ? Maybe.empty() : Maybe.just(secret);
             }
 
             @Override
@@ -199,14 +198,14 @@ class KubernetesSecretProviderTest {
         }
 
         @Test
-        void should_not_be_able_to_watch_when_no_secret() {
+        void should_be_able_to_watch_when_no_secret() {
             this.secret = null;
             this.flowable = Flowable.empty();
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
             Maybe<SecretMap> resolve = cut.resolve(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
             Flowable<SecretEvent> watch = cut.watch(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
-            assertThatCode(resolve::blockingGet).isInstanceOf(RuntimeException.class).hasMessageContaining("secret not found");
-            assertThatCode(watch::blockingFirst).isInstanceOf(RuntimeException.class).hasMessageContaining("secret not found");
+            resolve.test().assertComplete();
+            watch.elementAt(0).test().assertComplete();
         }
     }
 

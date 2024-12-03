@@ -4,6 +4,7 @@ import io.gravitee.kubernetes.client.KubernetesClient;
 import io.gravitee.kubernetes.client.api.ResourceQuery;
 import io.gravitee.kubernetes.client.api.WatchQuery;
 import io.gravitee.kubernetes.client.config.KubernetesConfig;
+import io.gravitee.kubernetes.client.exception.ResourceNotFoundException;
 import io.gravitee.kubernetes.client.impl.KubernetesClientV1Impl;
 import io.gravitee.kubernetes.client.model.v1.Event;
 import io.gravitee.kubernetes.client.model.v1.Secret;
@@ -51,7 +52,14 @@ public class K8sClientImpl implements K8sClient {
     }
 
     public Maybe<Secret> getSecret(K8sSecretLocation location) {
-        return client.get(ResourceQuery.secret(getNamespace(location), location.secret()).build());
+        return client
+            .get(ResourceQuery.secret(getNamespace(location), location.secret()).build())
+            .onErrorResumeNext(err -> {
+                if (err instanceof ResourceNotFoundException) {
+                    return Maybe.empty();
+                }
+                return Maybe.error(err);
+            });
     }
 
     public Flowable<Event<Secret>> watchSecret(K8sSecretLocation location) {
