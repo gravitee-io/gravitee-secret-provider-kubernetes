@@ -2,7 +2,9 @@ package io.gravitee.secretprovider.kubernetes;
 
 import io.gravitee.secretprovider.kubernetes.client.api.K8sClient;
 import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
-import io.gravitee.secrets.api.core.*;
+import io.gravitee.secrets.api.core.SecretEvent;
+import io.gravitee.secrets.api.core.SecretMap;
+import io.gravitee.secrets.api.core.SecretURL;
 import io.gravitee.secrets.api.errors.SecretManagerException;
 import io.gravitee.secrets.api.plugin.SecretProvider;
 import io.reactivex.rxjava3.core.Flowable;
@@ -37,20 +39,20 @@ public class KubernetesSecretProvider implements SecretProvider {
     }
 
     @Override
-    public Maybe<SecretMap> resolve(SecretMount secretMount) {
-        K8sSecretLocation k8sLocation = K8sSecretLocation.fromLocation(secretMount.location());
+    public Maybe<SecretMap> resolve(SecretURL secretURL) {
+        K8sSecretLocation k8sLocation = fromURL(secretURL);
         return client
             .getSecret(k8sLocation)
             .map(k8sSecret -> {
                 SecretMap sm = SecretMap.ofBase64(k8sSecret.getData());
-                handleWellKnownSecretKeys(sm, secretMount);
+                handleWellKnownSecretKeys(sm, secretURL);
                 return sm;
             });
     }
 
     @Override
-    public Flowable<SecretEvent> watch(SecretMount secretMount) {
-        K8sSecretLocation k8sLocation = K8sSecretLocation.fromLocation(secretMount.location());
+    public Flowable<SecretEvent> watch(SecretURL secretURL) {
+        K8sSecretLocation k8sLocation = fromURL(secretURL);
         return client
             .watchSecret(k8sLocation)
             .map(event -> {
@@ -61,24 +63,18 @@ public class KubernetesSecretProvider implements SecretProvider {
                     return new SecretEvent(SecretEvent.Type.DELETED, new SecretMap(null));
                 }
                 SecretMap secretMap = SecretMap.ofBase64(event.getObject().getData());
-                handleWellKnownSecretKeys(secretMap, secretMount);
+                handleWellKnownSecretKeys(secretMap, secretURL);
                 return new SecretEvent(SecretEvent.Type.UPDATED, secretMap);
             });
     }
 
-    @Override
-    public SecretMount fromURL(SecretURL url) {
-        K8sSecretLocation k8sSecretLocation = K8sSecretLocation.fromURL(url, client.config());
-        return new SecretMount(url.provider(), new SecretLocation(k8sSecretLocation.asMap()), k8sSecretLocation.key(), url);
+    K8sSecretLocation fromURL(SecretURL url) {
+        return K8sSecretLocation.fromURL(url, client.config());
     }
 
-    private void handleWellKnownSecretKeys(SecretMap secretMap, SecretMount secretMount) {
+    private void handleWellKnownSecretKeys(SecretMap secretMap, SecretURL secretURL) {
         secretMap.handleWellKnownSecretKeys(
-            Optional
-                .ofNullable(secretMount.secretURL())
-                .map(SecretURL::wellKnowKeyMap)
-                .filter(map -> !map.isEmpty())
-                .orElse(DEFAULT_WELL_KNOW_KEY_MAP)
+            Optional.ofNullable(secretURL).map(SecretURL::wellKnowKeyMap).filter(map -> !map.isEmpty()).orElse(DEFAULT_WELL_KNOW_KEY_MAP)
         );
     }
 }

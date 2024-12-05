@@ -10,7 +10,6 @@ import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
 import io.gravitee.secretprovider.kubernetes.config.K8sSecretLocation;
 import io.gravitee.secrets.api.core.SecretEvent;
 import io.gravitee.secrets.api.core.SecretMap;
-import io.gravitee.secrets.api.core.SecretMount;
 import io.gravitee.secrets.api.core.SecretURL;
 import io.reactivex.rxjava3.core.Flowable;
 import io.reactivex.rxjava3.core.Maybe;
@@ -41,40 +40,30 @@ class KubernetesSecretProviderTest {
         }
 
         @Test
-        void should_return_secret_mount_from_URL_with_key() {
+        void should_return_secret_URL_with_key() {
             SecretURL url = SecretURL.from("secret://kubernetes/secret/foo:bar");
-            SecretMount secretMount = cut.fromURL(url);
-            assertThat(secretMount.secretURL()).isEqualTo(url);
-            assertThat(secretMount.provider()).isEqualTo("kubernetes");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).secret()).isEqualTo("secret/foo");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).namespace()).isEqualTo("myapp");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).key()).isEqualTo("bar");
-            assertThat(secretMount.key()).isEqualTo("bar");
+            K8sSecretLocation location = cut.fromURL(url);
+            assertThat(location.secret()).isEqualTo("secret/foo");
+            assertThat(location.namespace()).isEqualTo("myapp");
+            assertThat(location.key()).isEqualTo("bar");
         }
 
         @Test
-        void should_return_secret_mount_from_URL_with_slash_and_key() {
+        void should_return_secret_URL_with_slash_and_key() {
             SecretURL url = SecretURL.from("secret://kubernetes/secret/foo/foo:bar");
-            SecretMount secretMount = cut.fromURL(url);
-            assertThat(secretMount.secretURL()).isEqualTo(url);
-            assertThat(secretMount.provider()).isEqualTo("kubernetes");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).secret()).isEqualTo("secret/foo/foo");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).namespace()).isEqualTo("myapp");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).key()).isEqualTo("bar");
-            assertThat(secretMount.key()).isEqualTo("bar");
+            K8sSecretLocation location = cut.fromURL(url);
+            assertThat(location.secret()).isEqualTo("secret/foo/foo");
+            assertThat(location.namespace()).isEqualTo("myapp");
+            assertThat(location.key()).isEqualTo("bar");
         }
 
         @Test
-        void should_return_secret_mount_from_URL_without_key_but_namespace() {
+        void should_return_secret_URL_without_key_but_namespace() {
             SecretURL url = SecretURL.from("secret://kubernetes/secret/foo?namespace=buzz");
-            SecretMount secretMount = cut.fromURL(url);
-            assertThat(secretMount.secretURL()).isEqualTo(url);
-            assertThat(secretMount.provider()).isEqualTo("kubernetes");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).secret()).isEqualTo("secret/foo");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).namespace()).isEqualTo("buzz");
-            assertThat(K8sSecretLocation.fromLocation(secretMount.location()).key()).isNull();
-            assertThat(secretMount.key()).isNull();
-            assertThat(secretMount.isKeyEmpty()).isTrue();
+            K8sSecretLocation location = cut.fromURL(url);
+            assertThat(location.secret()).isEqualTo("secret/foo");
+            assertThat(location.namespace()).isEqualTo("buzz");
+            assertThat(location.key()).isNull();
         }
     }
 
@@ -108,9 +97,7 @@ class KubernetesSecretProviderTest {
             this.secret = new Secret();
             secret.setData(Map.of("pwd", base64("changeme"), "usr", base64("admin")));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
-            Maybe<SecretMap> result = cut.resolve(
-                cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo?keymap=username:usr&keymap=password:pwd"))
-            );
+            Maybe<SecretMap> result = cut.resolve(SecretURL.from("secret://kubernetes/secret/foo?keymap=username:usr&keymap=password:pwd"));
             SecretMap secretMap = result.blockingGet();
             assertThat(secretMap).isNotNull();
             assertThat(secretMap.wellKnown(SecretMap.WellKnownSecretKey.USERNAME))
@@ -133,7 +120,7 @@ class KubernetesSecretProviderTest {
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
 
             Flowable<SecretEvent> result = cut.watch(
-                cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo?keymap=certificate:pub&keymap=private_key:key"))
+                SecretURL.from("secret://kubernetes/secret/foo?keymap=certificate:pub&keymap=private_key:key")
             );
             List<SecretEvent> events = result.toList().blockingGet();
 
@@ -158,7 +145,7 @@ class KubernetesSecretProviderTest {
             secret.setData(Map.of("password", base64("changeme"), "username", base64("admin")));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
 
-            Maybe<SecretMap> result = cut.resolve(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
+            Maybe<SecretMap> result = cut.resolve(SecretURL.from("secret://kubernetes/secret/foo"));
 
             SecretMap secretMap = result.blockingGet();
             assertThat(secretMap).isNotNull();
@@ -180,7 +167,7 @@ class KubernetesSecretProviderTest {
             this.secret.setData(Map.of("tls.key", base64("changeme"), "tls.crt", base64("admin")));
             this.flowable = Flowable.fromIterable(List.of(new Event<>("CREATED", secret)));
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
-            Flowable<SecretEvent> result = cut.watch(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
+            Flowable<SecretEvent> result = cut.watch(SecretURL.from("secret://kubernetes/secret/foo"));
             List<SecretEvent> events = result.toList().blockingGet();
             assertThat(events).hasSize(1);
             SecretMap secretMap = events.get(0).secretMap();
@@ -202,8 +189,8 @@ class KubernetesSecretProviderTest {
             this.secret = null;
             this.flowable = Flowable.empty();
             KubernetesSecretProvider cut = new KubernetesSecretProvider(new MockClient());
-            Maybe<SecretMap> resolve = cut.resolve(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
-            Flowable<SecretEvent> watch = cut.watch(cut.fromURL(SecretURL.from("secret://kubernetes/secret/foo")));
+            Maybe<SecretMap> resolve = cut.resolve(SecretURL.from("secret://kubernetes/secret/foo"));
+            Flowable<SecretEvent> watch = cut.watch(SecretURL.from("secret://kubernetes/secret/foo"));
             resolve.test().assertComplete();
             watch.elementAt(0).test().assertComplete();
         }
