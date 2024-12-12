@@ -2,11 +2,9 @@ package io.gravitee.secretprovider.kubernetes;
 
 import static io.gravitee.secretprovider.kubernetes.test.TestUtils.newConfig;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
 
-import io.gravitee.node.api.secrets.SecretProvider;
-import io.gravitee.node.api.secrets.model.SecretURL;
 import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
+import io.gravitee.secrets.api.plugin.SecretProvider;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayNameGeneration;
 import org.junit.jupiter.api.DisplayNameGenerator;
@@ -24,6 +22,5 @@ class KubernetesSecretProviderFactoryTest {
         SecretProvider secretProvider = new KubernetesSecretProviderFactory()
             .create(new K8sConfig(newConfig(Map.of("kubeConfigFile", "src/test/resources/config.yaml"))));
         assertThat(secretProvider).isInstanceOf(KubernetesSecretProvider.class);
-        assertThatCode(() -> secretProvider.fromURL(SecretURL.from("secret://kubernetes/foo"))).doesNotThrowAnyException();
     }
 }

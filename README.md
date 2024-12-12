@@ -2,7 +2,15 @@
 
 ## Category
 
-`secret-provider` (Gravitee v4.2 and above)
+`secret-provider`
+
+## Compatibility Matrix
+
+| Gravitee Version | Secret Provider AWS | Product |
+|------------------|---------------------|---------|
+| 4.2.x            | 1.0.x               | All     |
+| 4.6.x            | 2.0.0               | All     |
+
 
 ## Overview
 
