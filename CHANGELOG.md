@@ -1,3 +1,19 @@
+# [2.0.0-alpha.1](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.1...2.0.0-alpha.1) (2024-12-12)
+
+
+### Features
+
+* change contract for api secrets ([#33](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/issues/33)) ([03a2b33](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/03a2b331177e57f63f1b4b8895df27e2bcfdd970))
+
+
+### BREAKING CHANGES
+
+* plugin interface has changed
+* Use gravitee-secret-api (many classes moved)
+* Remove SecretMount in favour of SecretURL
+* Flowable and Maybe are empty when secret is not found
+* Remove constraint on URL starting with provider plugin
+
 ## [1.0.1](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.0...1.0.1) (2023-12-14)
 
 
