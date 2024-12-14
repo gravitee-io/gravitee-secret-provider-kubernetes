@@ -1,3 +1,10 @@
+# [2.0.0-alpha.2](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/2.0.0-alpha.1...2.0.0-alpha.2) (2024-12-14)
+
+
+### Bug Fixes
+
+* add provided deps back to pom ([0bef5a6](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/0bef5a671a5d4937b9a13feb99c1345f37ce2c9e))
+
 # [2.0.0-alpha.1](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.1...2.0.0-alpha.1) (2024-12-12)
 
 
