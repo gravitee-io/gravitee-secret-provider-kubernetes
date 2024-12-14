@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>22.0.23</version>
+        <version>22.2.4</version>
     </parent>
 
     <groupId>io.gravitee.secretprovider</groupId>
@@ -34,7 +34,7 @@
 
     <properties>
         <gravitee-bom.version>8.1.20</gravitee-bom.version>
-        <gravitee-secret-api.version>1.0.0-alpha.2</gravitee-secret-api.version>
+        <gravitee-secret-api.version>1.0.0-alpha.3</gravitee-secret-api.version>
 
         <gravitee-kubernetes.version>3.4.1</gravitee-kubernetes.version>
 
@@ -96,6 +96,11 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
             <scope>provided</scope>
         </dependency>
         <!-- test -->
