@@ -1,3 +1,10 @@
+# [2.0.0-alpha.3](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/2.0.0-alpha.2...2.0.0-alpha.3) (2024-12-30)
+
+
+### Bug Fixes
+
+* **deps:** bump gravitee-secret-api to 1.0.0 ([45d2d77](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/45d2d77db0e4afd12783295464e79684724fb881))
+
 # [2.0.0-alpha.2](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/2.0.0-alpha.1...2.0.0-alpha.2) (2024-12-14)
 
 
