@@ -1,9 +1,9 @@
 package io.gravitee.secretprovider.kubernetes;
 
-import io.gravitee.node.api.secrets.SecretProvider;
-import io.gravitee.node.api.secrets.SecretProviderFactory;
 import io.gravitee.secretprovider.kubernetes.client.K8sClientImpl;
 import io.gravitee.secretprovider.kubernetes.config.K8sConfig;
+import io.gravitee.secrets.api.plugin.SecretProvider;
+import io.gravitee.secrets.api.plugin.SecretProviderFactory;
 
 /**
  * @author Benoit BORDIGONI (benoit.bordigoni at graviteesource.com)

@@ -23,19 +23,21 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>22.0.23</version>
+        <version>22.2.4</version>
     </parent>
 
     <groupId>io.gravitee.secretprovider</groupId>
     <artifactId>gravitee-secret-provider-kubernetes</artifactId>
-    <version>1.0.1</version>
+    <version>2.0.0-alpha.3</version>
     <name>Gravitee.io - Plugin - Secret Provider - Kubernetes</name>
     <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
-        <gravitee-node.version>5.11.0</gravitee-node.version>
-        <gravitee-bom.version>6.0.35</gravitee-bom.version>
-        <gravitee-kubernetes.version>3.1.0</gravitee-kubernetes.version>
+        <gravitee-bom.version>8.1.20</gravitee-bom.version>
+        <gravitee-secret-api.version>1.0.0</gravitee-secret-api.version>
+
+        <gravitee-kubernetes.version>3.4.1</gravitee-kubernetes.version>
+
         <maven-plugin-assembly.version>3.7.1</maven-plugin-assembly.version>
         <maven-plugin-prettier.version>0.21</maven-plugin-prettier.version>
         <maven-plugin-prettier.prettierjava.version>2.0.0</maven-plugin-prettier.prettierjava.version>
@@ -58,25 +60,22 @@
                 <type>pom</type>
             </dependency>
             <dependency>
-                <groupId>io.gravitee.node</groupId>
-                <artifactId>gravitee-node</artifactId>
-                <version>${gravitee-node.version}</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-            <dependency>
                 <groupId>io.gravitee.kubernetes</groupId>
                 <artifactId>gravitee-kubernetes-client</artifactId>
                 <version>${gravitee-kubernetes.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.gravitee.secret</groupId>
+                <artifactId>gravitee-secret-api</artifactId>
+                <version>${gravitee-secret-api.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        
         <dependency>
-            <groupId>io.gravitee.node</groupId>
-            <artifactId>gravitee-node-api</artifactId>
+            <groupId>io.gravitee.secret</groupId>
+            <artifactId>gravitee-secret-api</artifactId>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -90,8 +89,18 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
             <scope>provided</scope>
         </dependency>
         <!-- test -->
