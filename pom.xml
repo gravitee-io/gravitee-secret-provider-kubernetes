@@ -23,7 +23,7 @@
     <parent>
         <groupId>io.gravitee</groupId>
         <artifactId>gravitee-parent</artifactId>
-        <version>22.2.4</version>
+        <version>22.2.5</version>
     </parent>
 
     <groupId>io.gravitee.secretprovider</groupId>
@@ -134,9 +134,13 @@
                 <groupId>com.mycila</groupId>
                 <artifactId>license-maven-plugin</artifactId>
                 <configuration>
-                    <excludes>
-                        <exclude>*/**</exclude>
-                    </excludes>
+                    <licenseSets>
+                        <licenseSet>
+                            <excludes>
+                                <exclude>*/**</exclude>
+                            </excludes>
+                        </licenseSet>
+                    </licenseSets>
                 </configuration>
             </plugin>
             <plugin>
