@@ -33,7 +33,7 @@
     <description>Plugin to fetch secrets from Kubernetes</description>
 
     <properties>
-        <gravitee-bom.version>8.3.44</gravitee-bom.version>
+        <gravitee-bom.version>8.3.45</gravitee-bom.version>
         <gravitee-secret-api.version>1.0.0</gravitee-secret-api.version>
 
         <gravitee-kubernetes.version>3.4.1</gravitee-kubernetes.version>
