@@ -41,7 +41,7 @@
         <maven-plugin-assembly.version>3.8.0</maven-plugin-assembly.version>
         <maven-plugin-prettier.version>0.21</maven-plugin-prettier.version>
         <maven-plugin-prettier.prettierjava.version>2.0.0</maven-plugin-prettier.prettierjava.version>
-        <maven-plugin-properties.version>1.2.1</maven-plugin-properties.version>
+        <maven-plugin-properties.version>1.3.0</maven-plugin-properties.version>
     
         <!-- Property used by the publication job in CI-->
         <publish-folder-path>plugins/secret-providers</publish-folder-path>
