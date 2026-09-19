@@ -38,9 +38,6 @@
 
         <gravitee-kubernetes.version>3.4.1</gravitee-kubernetes.version>
 
-        <maven-plugin-assembly.version>3.8.0</maven-plugin-assembly.version>
-        <maven-plugin-prettier.version>0.21</maven-plugin-prettier.version>
-        <maven-plugin-prettier.prettierjava.version>2.0.0</maven-plugin-prettier.prettierjava.version>
         <maven-plugin-properties.version>1.3.0</maven-plugin-properties.version>
     
         <!-- Property used by the publication job in CI-->
@@ -165,7 +162,6 @@
             </plugin>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>${maven-plugin-assembly.version}</version>
                 <configuration>
                     <appendAssemblyId>false</appendAssemblyId>
                     <descriptors>
