@@ -34,9 +34,9 @@ class KubernetesSecretProviderTest {
 
         @BeforeEach
         void setup() {
-            cut =
-                (KubernetesSecretProvider) new KubernetesSecretProviderFactory()
-                    .create(new K8sConfig(newConfig(Map.of("namespace", "myapp", "kubeConfigFile", "src/test/resources/config.yaml"))));
+            cut = (KubernetesSecretProvider) new KubernetesSecretProviderFactory().create(
+                new K8sConfig(newConfig(Map.of("namespace", "myapp", "kubeConfigFile", "src/test/resources/config.yaml")))
+            );
         }
 
         @Test

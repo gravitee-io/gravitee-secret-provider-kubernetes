@@ -19,8 +19,9 @@ class KubernetesSecretProviderFactoryTest {
 
     @Test
     void should_create_a_new_instance() {
-        SecretProvider secretProvider = new KubernetesSecretProviderFactory()
-            .create(new K8sConfig(newConfig(Map.of("kubeConfigFile", "src/test/resources/config.yaml"))));
+        SecretProvider secretProvider = new KubernetesSecretProviderFactory().create(
+            new K8sConfig(newConfig(Map.of("kubeConfigFile", "src/test/resources/config.yaml")))
+        );
         assertThat(secretProvider).isInstanceOf(KubernetesSecretProvider.class);
     }
 }

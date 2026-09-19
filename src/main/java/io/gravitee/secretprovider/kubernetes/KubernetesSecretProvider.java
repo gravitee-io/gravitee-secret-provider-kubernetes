@@ -74,7 +74,10 @@ public class KubernetesSecretProvider implements SecretProvider {
 
     private void handleWellKnownSecretKeys(SecretMap secretMap, SecretURL secretURL) {
         secretMap.handleWellKnownSecretKeys(
-            Optional.ofNullable(secretURL).map(SecretURL::wellKnowKeyMap).filter(map -> !map.isEmpty()).orElse(DEFAULT_WELL_KNOW_KEY_MAP)
+            Optional.ofNullable(secretURL)
+                .map(SecretURL::wellKnowKeyMap)
+                .filter(map -> !map.isEmpty())
+                .orElse(DEFAULT_WELL_KNOW_KEY_MAP)
         );
     }
 }
