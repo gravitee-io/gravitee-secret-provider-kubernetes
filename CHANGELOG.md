@@ -1,3 +1,16 @@
+# [3.0.0](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/2.0.0...3.0.0) (2026-09-21)
+
+
+* chore(deps)!: move to the gravitee orb 5 and parent 23 ([c2f95ef](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/commit/c2f95efa29e43bab0c2abbc292d0ad361bc71bf0))
+
+
+### BREAKING CHANGES
+
+* the artifact is now compiled for Java 21, up from Java 17, and
+requires a Java 21 runtime or later.
+
+https://gravitee.atlassian.net/browse/BX-403
+
 # [2.0.0](https://github.com/gravitee-io/gravitee-secret-provider-kubernetes/compare/1.0.1...2.0.0) (2024-12-30)
 
 
